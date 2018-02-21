@@ -1,9 +1,11 @@
 var mosca = require('mosca');
 var mqtt = require('mqtt');
+
+var clusterServer = process.env.cluster;
 var connectManager;
-var brokerId = "uniq1";
+var brokerId = process.env.brokerid;
 var settings = {
-  port: 3001
+  port: 1883
 };
 var server = new mosca.Server(settings);
 server.on('ready', setup); //on init it fires up setup()
@@ -11,7 +13,7 @@ server.on('ready', setup); //on init it fires up setup()
 // fired when the mqtt server is ready
 function setup() {
   console.log('Borker is up and running');
-  connectManager = mqtt.connect('tcp://127.0.0.1:8000');
+  connectManager = mqtt.connect(clusterServer);
   connectManager.on('connect', () => {
     connectManager.subscribe('#');
   });
