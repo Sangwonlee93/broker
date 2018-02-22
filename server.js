@@ -31,7 +31,6 @@ function setup() {
         retain: false, // or true
       };
       server.publish(realmsg, "ComeToBrokerManager", function() {
-        console.log('done!');
       });
     }
   });
@@ -44,7 +43,6 @@ server.on('published', function(packet, client) {
 // fired when a client connects
 server.on('clientConnected', function(client) {
   if (bridge != client.id) {
-    console.log("temp");
     var dt = dateTime.create();
     var formatted = dt.format('Y-m-d H:M:S');
     var options = {
@@ -66,5 +64,18 @@ server.on('clientConnected', function(client) {
 
 // fired when a client disconnects
 server.on('clientDisconnected', function(client) {
-  console.log('Client Disconnected:', client.id);
+  if (bridge != client.id) {
+    var options = {
+      uri: 'http://'+dbServer+':8080/client',
+      method: 'DELETE',
+      json: {
+        "client_mqtt_id": client.id
+      }
+    };
+
+    request(options, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+      }
+    });
+  }
 });
