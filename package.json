@@ -9,6 +9,7 @@
   "author": "lsw0833",
   "license": "ISC",
   "dependencies": {
-    "mosca": "^2.7.0"
+    "mosca": "^2.7.0",
+    "request": "^2.83.0"
   }
 }
