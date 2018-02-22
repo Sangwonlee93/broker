@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "mosca": "^2.7.0",
+    "node-datetime": "^2.0.6",
     "request": "^2.83.0"
   }
 }

@@ -1,6 +1,7 @@
 var mosca = require('mosca');
 var mqtt = require('mqtt');
 var request = require('request');
+var dateTime = require('node-datetime');
 var bridge = "";
 var clusterServer = process.env.cluster;
 var dbServer = process.env.dbhost;
@@ -44,13 +45,14 @@ server.on('published', function(packet, client) {
 server.on('clientConnected', function(client) {
   if (bridge != client.id) {
     console.log("temp");
-    let date = new Date();
+    var dt = dateTime.create();
+    var formatted = dt.format('Y-m-d H:M:S');
     var options = {
       uri: 'http://'+dbServer+':8080/client',
       method: 'POST',
       json: {
         "client_mqtt_id": client.id,
-        "last_connected": date,
+        "last_connected": formatted,
         "broker_id": brokerId
       }
     };
