@@ -3,6 +3,7 @@ var mqtt = require('mqtt');
 var request = require('request');
 var bridge = "";
 var clusterServer = process.env.cluster;
+var dbServer = process.env.dbhost;
 var connectManager;
 var brokerId = process.env.brokerid;
 var settings = {
@@ -42,9 +43,10 @@ server.on('published', function(packet, client) {
 // fired when a client connects
 server.on('clientConnected', function(client) {
   if (bridge != client.id) {
+    console.log("temp");
     let date = new Date();
     var options = {
-      uri: 'http://'+clusterServer+':8080/client',
+      uri: 'http://'+dbServer+':8080/client',
       method: 'POST',
       json: {
         "client_mqtt_id": client.id,
