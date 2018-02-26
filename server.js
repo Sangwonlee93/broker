@@ -24,8 +24,10 @@ function setup() {
   connectManager.on('message', (topic, message) => {
     var slashindex = topic.indexOf("/") + 1;
     if (brokerId != topic.slice(0, slashindex - 1)) {
+      var temp = topic.slice(slashindex, topic.length);
+      var tempslash = temp.indexOf("/")+1;
       var realmsg = {
-        topic: topic.slice(slashindex, topic.length),
+        topic: temp.slice(tempslash, temp.length),
         payload: message, // or a Buffer
         qos: 1, // 0, 1, or 2
         retain: false, // or true
@@ -36,7 +38,7 @@ function setup() {
   });
 }
 server.on('published', function(packet, client) {
-  if (packet.topic.indexOf("$SYS") != 0 && packet.topic != "internal") {
+  if (packet.topic.indexOf("$SYS") != 0 && packet.topic.indexOf("broadcast")==0) {
     connectManager.publish(brokerId + "/" + packet.topic, packet.payload);
   }
 });
